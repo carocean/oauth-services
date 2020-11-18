@@ -17,10 +17,11 @@ import java.io.IOException;
 public class Controller {
 
     @GetMapping("/test")
-    public String test(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        Cookie cookie = new Cookie("SESSION","fassssssss");
-        response.addCookie(cookie);
-        response.sendRedirect("http://localhost:8082/client2/test");
-        return "fffffff";
+    public Result test() {
+        System.out.println("11111");
+        Result result = new Result();
+        result.setCode(0);
+        result.setMsg("hello client1");
+        return result;
     }
 }

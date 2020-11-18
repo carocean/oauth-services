@@ -8,8 +8,8 @@ security:
     client:
       client-id: client1
       client-secret: client1_secret
-      access-token-uri: http://fcx.com/auth/oauth/token
-      user-authorization-uri: http://fcx.com/auth/oauth/authorize
+      access-token-uri: http://oauth.com/auth/oauth/token
+      user-authorization-uri: http://oauth.com/auth/oauth/authorize
     resource:
       jwt:
-        key-uri: http://fcx.com/auth/oauth/token_key
+        key-uri: http://oauth.com/auth/oauth/token_key

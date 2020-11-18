@@ -16,8 +16,11 @@ import java.io.IOException;
 public class Controller {
 
     @GetMapping("/test")
-    public String test(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Result test() throws IOException {
         System.out.println("222222");
-        return "22222";
+        Result result = new Result();
+        result.setCode(0);
+        result.setMsg("hello client2");
+        return result;
     }
 }
