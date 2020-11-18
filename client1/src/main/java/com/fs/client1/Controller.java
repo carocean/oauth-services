@@ -21,7 +21,12 @@ public class Controller {
         System.out.println("11111");
         Result result = new Result();
         result.setCode(0);
-        result.setMsg("hello client1");
+        result.setData("hello client1");
         return result;
+    }
+
+    @GetMapping("/")
+    public void callback(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://client1.com/client1Page/home");
     }
 }

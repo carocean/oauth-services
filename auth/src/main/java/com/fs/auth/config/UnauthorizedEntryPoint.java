@@ -23,23 +23,21 @@ import java.util.Map;
 public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        Map<String, String[]> param = request.getParameterMap();
-        StringBuffer sb = new StringBuffer();
-        param.forEach((k, v) -> {
-            sb.append("&").append(k).append("=").append(v[0]);
+        Map<String, String[]> paramMap = request.getParameterMap();
+        StringBuilder param = new StringBuilder();
+        paramMap.forEach((k, v) -> {
+            param.append("&").append(k).append("=").append(v[0]);
         });
-        sb.deleteCharAt(0);
+        param.deleteCharAt(0);
         String isRedirectValue = request.getParameter("isRedirect");
         if (!StringUtils.isEmpty(isRedirectValue) && Boolean.valueOf(isRedirectValue)) {
-            response.sendRedirect("http://fcx.com/pc/login?"+sb.toString());
+            response.sendRedirect("http://oauth.com/authPage/login?"+param.toString());
             return;
         }
-        StringBuffer url = request.getRequestURL();
-        url.append("?").append(sb);
-        url.append("&isRedirect=true");
+        String authUrl = "http://oauth.com/auth/oauth/authorize?"+param.toString()+"&isRedirect=true";
         Result result = new Result();
         result.setCode(800);
-        result.setData(url.toString());
+        result.setData(authUrl);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
         ObjectMapper mapper = new ObjectMapper();

@@ -20,7 +20,12 @@ public class Controller {
         System.out.println("222222");
         Result result = new Result();
         result.setCode(0);
-        result.setMsg("hello client2");
+        result.setData("hello client2");
         return result;
+    }
+
+    @GetMapping("/")
+    public void callback(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://client2.com/client2Page/home");
     }
 }

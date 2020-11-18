@@ -42,7 +42,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .secret(passwordEncoder.encode("client1_secret"))
                 .scopes("all")
                 .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://client1.com/oa/login")
+                .redirectUris("http://client1.com/client1/login")
                 .accessTokenValiditySeconds(7200)
                 .autoApprove(true)
 
@@ -53,7 +53,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .secret(passwordEncoder.encode("client2_secret"))
                 .scopes("all")
                 .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://client2.com/crm/login")
+                .redirectUris("http://client2.com/client2/login")
                 .accessTokenValiditySeconds(7200)
                 .autoApprove(true)
 
