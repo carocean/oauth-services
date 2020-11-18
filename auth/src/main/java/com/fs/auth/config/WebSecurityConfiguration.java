@@ -74,7 +74,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         List<UserDetails> users = new ArrayList<>();
 
         UserDetails user_admin = User.withUsername("admin").password(password).authorities("ADMIN", "USER").build();
-        UserDetails user_user1 = User.withUsername("user 1").password(password).authorities("USER").build();
+        UserDetails user_user1 = User.withUsername("user1").password(password).authorities("USER").build();
 
         users.add(user_admin);
         users.add(user_user1);
