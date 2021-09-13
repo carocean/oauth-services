@@ -8,6 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>auth</module>
+        <module>auth-db</module>
         <module>client1</module>
         <module>client2</module>
     </modules>

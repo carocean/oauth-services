@@ -1,4 +1,4 @@
-package com.fs.auth;
+package com.fs.authDB;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description:
  **/
 @SpringBootApplication
-public class AuthApplication {
+public class AuthDBApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AuthApplication.class, args);
+        SpringApplication.run(AuthDBApplication.class, args);
     }
 }
