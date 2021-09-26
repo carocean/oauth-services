@@ -28,10 +28,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private FailureAuthentication failureAuthentication;
     @Autowired
     private UnauthorizedEntryPoint unauthorizedEntryPoint;
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -41,15 +43,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.formLogin()
-//                .loginPage("/login")
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/login").permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and().csrf().disable().cors();
-
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint)
                 .and()
@@ -58,28 +51,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successAuthentication).failureHandler(failureAuthentication);
-    }
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsServiceBean() {
-        Collection<UserDetails> users = buildUsers();
-
-        return new InMemoryUserDetailsManager(users);
-    }
-
-    private Collection<UserDetails> buildUsers() {
-        String password = passwordEncoder().encode("123456");
-
-        List<UserDetails> users = new ArrayList<>();
-
-        UserDetails user_admin = User.withUsername("admin").password(password).authorities("ADMIN", "USER").build();
-        UserDetails user_user1 = User.withUsername("user1").password(password).authorities("USER").build();
-
-        users.add(user_admin);
-        users.add(user_user1);
-
-        return users;
     }
 
     @Bean

@@ -41,8 +41,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 //        endpoints.accessTokenConverter(jwtAccessTokenConverter())
 //                .tokenStore(jwtTokenStore());
         super.configure(endpoints);
-        endpoints.tokenStore(new JdbcTokenStore(dataSource));
-        endpoints.authorizationCodeServices(new JdbcAuthorizationCodeServices(dataSource));
+//        endpoints.tokenStore(new JdbcTokenStore(dataSource));
+//        endpoints.authorizationCodeServices(new JdbcAuthorizationCodeServices(dataSource));
     }
 
 }

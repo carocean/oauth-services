@@ -11,6 +11,8 @@
         <module>auth-db</module>
         <module>client1</module>
         <module>client2</module>
+        <module>auth-token</module>
+        <module>auth-code</module>
     </modules>
     <packaging>pom</packaging>
     <name>sso</name>
