@@ -65,3 +65,10 @@ create table ClientDetails (
   additionalInformation VARCHAR(4096),
   autoApproveScopes VARCHAR(256)
 );
+
+CREATE TABLE `client_details_test` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `client_id` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `client_secret` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
