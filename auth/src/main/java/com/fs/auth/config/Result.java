@@ -1,4 +1,4 @@
-package com.fs.authDb.config;
+package com.fs.auth.config;
 
 /**
  * @author: fengchangxin

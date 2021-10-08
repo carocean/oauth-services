@@ -1,4 +1,4 @@
-package com.fs.authDb.config;
+package com.fs.client1.jwt;
 
 /**
  * @author: fengchangxin

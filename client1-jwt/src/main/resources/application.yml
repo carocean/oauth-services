@@ -7,10 +7,9 @@ security:
   oauth2:
     client:
       client-id: client1
-      preEstablishedRedirectUri:
       client-secret: client1_secret
       access-token-uri: http://oauth.com/auth/oauth/token
       user-authorization-uri: http://oauth.com/auth/oauth/authorize
     resource:
-      user-info-uri: http://oauth.com/auth/user
-      token-info-uri: http://oauth.com/auth/oauth/check_token
+      jwt:
+        key-uri: http://oauth.com/auth/oauth/token_key

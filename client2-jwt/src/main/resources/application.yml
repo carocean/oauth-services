@@ -11,5 +11,5 @@ security:
       access-token-uri: http://oauth.com/auth/oauth/token
       user-authorization-uri: http://oauth.com/auth/oauth/authorize
     resource:
-      user-info-uri: http://oauth.com/auth/user
-      token-info-uri: http://oauth.com/auth/oauth/check_token
+      jwt:
+        key-uri: http://oauth.com/auth/oauth/token_key

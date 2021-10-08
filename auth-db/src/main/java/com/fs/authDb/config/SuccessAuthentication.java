@@ -2,8 +2,8 @@ package com.fs.authDb.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -14,19 +14,19 @@ import java.io.PrintWriter;
 
 /**
  * @author: fcx
- * @create: 2018-12-02 09:27
+ * @create: 2018-12-02 09:24
  * @description:
  */
-@Component("failureAuthentication")
-public class FailureAuthentication extends SimpleUrlAuthenticationFailureHandler {
+@Component("successAuthentication")
+public class SuccessAuthentication extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter writer = response.getWriter();
         Result result = new Result();
-        result.setCode(1000);
-        result.setMsg("登录失败");
+        result.setCode(0);
+        result.setMsg("成功");
         ObjectMapper mapper = new ObjectMapper();
         writer.println(mapper.writeValueAsString(result));
         writer.flush();

@@ -27,6 +27,6 @@ public class Controller {
 
     @GetMapping("/")
     public void callback(HttpServletResponse response) throws IOException {
-        response.sendRedirect("http://client1.com/client1Page/home");
+        response.sendRedirect("http://client1.com/client1Page/#/home");
     }
 }

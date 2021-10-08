@@ -13,6 +13,8 @@
         <module>client2</module>
         <module>auth-token</module>
         <module>auth-code</module>
+        <module>client1-jwt</module>
+        <module>client2-jwt</module>
     </modules>
     <packaging>pom</packaging>
     <name>sso</name>
