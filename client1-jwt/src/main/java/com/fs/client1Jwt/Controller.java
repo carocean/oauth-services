@@ -1,4 +1,4 @@
-package com.fs.client1.jwt;
+package com.fs.client1Jwt;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +25,7 @@ public class Controller {
 
     @GetMapping("/")
     public void callback(HttpServletResponse response) throws IOException {
+        System.out.println("xxxxxx");
         response.sendRedirect("http://client1.com/client1Page/#/home");
     }
 }

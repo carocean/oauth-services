@@ -1,4 +1,4 @@
-package com.fs.client2.jwt;
+package com.fs.client2Jwt;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;

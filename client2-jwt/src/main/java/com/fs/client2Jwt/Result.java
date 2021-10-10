@@ -1,4 +1,4 @@
-package com.fs.client1.jwt;
+package com.fs.client2Jwt;
 
 /**
  * @author: fengchangxin

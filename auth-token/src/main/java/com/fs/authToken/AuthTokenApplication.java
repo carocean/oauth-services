@@ -1,16 +1,16 @@
-package com.fs.client1.jwt;
+package com.fs.authToken;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author: fengchangxin
- * @date: 2020/10/19:22:41
+ * @date: 2021/10/10:10:24
  * @description:
  **/
 @SpringBootApplication
-public class Client1JwtApplication {
+public class AuthTokenApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Client1JwtApplication.class, args);
+        SpringApplication.run(AuthTokenApplication.class,args);
     }
 }

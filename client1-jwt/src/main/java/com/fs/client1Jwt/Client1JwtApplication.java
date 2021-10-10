@@ -1,4 +1,4 @@
-package com.fs.client2.jwt;
+package com.fs.client1Jwt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @description:
  **/
 @SpringBootApplication
-public class Client2JwtApplication {
+public class Client1JwtApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Client2JwtApplication.class, args);
+        SpringApplication.run(Client1JwtApplication.class, args);
     }
 }
