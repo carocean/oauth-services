@@ -12,6 +12,10 @@ create table oauth_client_details (
   autoapprove VARCHAR(256)
 );
 
+INSERT INTO `oauth_client_details` VALUES ('client1', NULL, '$2a$10$oM/4QiWITscUiyCkxy2gMOQ5aXlQ.s9IBtJ10Hg1X79rwvQJtbr5i', 'all', 'authorization_code,refresh_token', 'http://client1.com/client1/login', NULL, 7200, 3600, NULL, 'true');
+INSERT INTO `oauth_client_details` VALUES ('client2', NULL, '$2a$10$itMmLoas1ClL.4KlIQtM6u4Wffb2sF4.O6oUo0Ug9Lt/PFJVsnt0W', 'all', 'authorization_code,refresh_token', 'http://client2.com/client2/login', NULL, 7200, 3600, NULL, 'true');
+
+
 create table oauth_client_token (
   token_id VARCHAR(256),
   token VARCHAR(256),
@@ -68,7 +72,19 @@ create table ClientDetails (
 
 CREATE TABLE `client_details_test` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `client_id` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `client_secret` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  client_id VARCHAR(256),
+  resource_ids VARCHAR(256),
+  client_secret VARCHAR(256),
+  scope VARCHAR(256),
+  authorized_grant_types VARCHAR(256),
+  web_server_redirect_uri VARCHAR(256),
+  authorities VARCHAR(256),
+  access_token_validity INTEGER,
+  refresh_token_validity INTEGER,
+  additional_information VARCHAR(4096),
+  autoapprove VARCHAR(256),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+);
+
+INSERT INTO `client_details_test` VALUES (1, 'client1', NULL, '$2a$10$oM/4QiWITscUiyCkxy2gMOQ5aXlQ.s9IBtJ10Hg1X79rwvQJtbr5i', 'all', 'authorization_code,refresh_token', 'http://client1.com/client1/login', NULL, 7200, 3600, NULL, 'true');
+INSERT INTO `client_details_test` VALUES (2, 'client2', NULL, '$2a$10$itMmLoas1ClL.4KlIQtM6u4Wffb2sF4.O6oUo0Ug9Lt/PFJVsnt0W', 'all', 'authorization_code,refresh_token', 'http://client2.com/client2/login', NULL, 7200, 3600, NULL, 'true');

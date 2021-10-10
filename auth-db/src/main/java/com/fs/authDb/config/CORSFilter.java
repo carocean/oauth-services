@@ -1,4 +1,4 @@
-package com.fs.authDb.config;
+package com.fs.authDB.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

@@ -1,4 +1,4 @@
-package com.fs.authDb;
+package com.fs.authDB;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

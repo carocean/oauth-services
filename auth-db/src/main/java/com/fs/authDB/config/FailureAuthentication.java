@@ -1,4 +1,4 @@
-package com.fs.authDb.config;
+package com.fs.authDB.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;

@@ -1,4 +1,4 @@
-package com.fs.authDb.config;
+package com.fs.authDB.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 import javax.sql.DataSource;
 
@@ -19,6 +20,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private DataSource dataSource;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ClientDetailsService clientDetailsManager;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -32,6 +35,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         clients.withClientDetails(new JdbcClientDetailsServiceBuilder().dataSource(dataSource)
                 .passwordEncoder(passwordEncoder).build());
     }
+
+    //自定义实现
+//    @Override
+//    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//        clients.withClientDetails(clientDetailsManager);
+//    }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
