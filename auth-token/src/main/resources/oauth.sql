@@ -44,7 +44,7 @@ CREATE TABLE `oauth_refresh_token` (
 
 create table oauth_code (
   code VARCHAR(256),
-  authentication VARCHAR(256)
+  authentication varbinary(3000)
 );
 
 create table oauth_approvals (
