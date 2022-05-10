@@ -1,0 +1,41 @@
+package com.fs.client1;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        String url = String.format("http://localhost:8080/logout?%s", request.getQueryString());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        String json = restTemplate.getForObject(url, String.class);
+        Map<String, Object> map = new ObjectMapper().readValue(json, HashMap.class);
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        PrintWriter writer = response.getWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        writer.println(mapper.writeValueAsString(map));
+        writer.flush();
+        writer.close();
+    }
+}

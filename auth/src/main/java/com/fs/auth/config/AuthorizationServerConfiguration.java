@@ -3,6 +3,9 @@ package com.fs.auth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -11,57 +14,47 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @EnableAuthorizationServer
 @Configuration
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private RedisAuthCodeStoreServices redisAuthCodeStoreServices;
+    @Autowired
+    ClientDetailsService remoteClientDetailsService;
+    @Autowired
+    TokenStore tokenStore;
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients()
                 .checkTokenAccess("isAuthenticated()")
-                .tokenKeyAccess("isAuthenticated()");
+//                .tokenKeyAccess("isAuthenticated()")
+                .tokenKeyAccess("permitAll()")
+        ;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.withClientDetails(inMemoryClientDetailsService());
-    }
-
-
-    @Bean
-    public ClientDetailsService inMemoryClientDetailsService() throws Exception {
-        return new InMemoryClientDetailsServiceBuilder()
-                // client oa application
-                .withClient("client1")
-                .secret(passwordEncoder.encode("client1_secret"))
-                .scopes("all")
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://client1.com/client1/login")
-                .accessTokenValiditySeconds(7200)
-                .autoApprove(true)
-
-                .and()
-
-                // client crm application
-                .withClient("client2")
-                .secret(passwordEncoder.encode("client2_secret"))
-                .scopes("all")
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://client2.com/client2/login")
-                .accessTokenValiditySeconds(7200)
-                .autoApprove(true)
-
-                .and()
-                .build();
+        clients.withClientDetails(remoteClientDetailsService);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 //        endpoints.accessTokenConverter(jwtAccessTokenConverter())
 //                .tokenStore(jwtTokenStore());
+        HandlerInterceptor interceptor = new MyWebRequestInterceptor();
+        endpoints.addInterceptor(interceptor);
+        endpoints.userDetailsService(userDetailsService);
+        endpoints.tokenStore(tokenStore);
+        endpoints.authorizationCodeServices(redisAuthCodeStoreServices);
+//        endpoints.pathMapping("/oauth/confirm_access", "http://localhost:8083/confirm_access");
         super.configure(endpoints);
     }
 

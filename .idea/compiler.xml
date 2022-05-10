@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="auth-db" />
+        <module name="auth" />
+        <module name="auth-code" />
+        <module name="client2-jwt" />
+        <module name="client2" />
+        <module name="client1" />
+        <module name="auth-token" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="client1-jwt" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth" options="-parameters" />
+      <module name="auth-code" options="-parameters" />
+      <module name="auth-db" options="-parameters" />
+      <module name="auth-token" options="-parameters" />
+      <module name="client1" options="-parameters" />
+      <module name="client1-jwt" options="-parameters" />
+      <module name="client2" options="-parameters" />
+      <module name="client2-jwt" options="-parameters" />
+    </option>
+  </component>
+</project>

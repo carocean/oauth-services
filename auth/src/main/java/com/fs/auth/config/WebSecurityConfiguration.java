@@ -1,9 +1,12 @@
 package com.fs.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.ArrayList;
@@ -27,13 +32,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private FailureAuthentication failureAuthentication;
     @Autowired
-    private UnauthorizedEntryPoint unauthorizedEntryPoint;
+    ApplicationContext applicationContext;
+    @Autowired
+    MyLogoutSuccessHandler myLogoutSuccessHandler;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
+        //这里配置全局用户信息
+        UserDetailsService userDetailsService = (UserDetailsService) applicationContext.getBean("remoteUserDetailsService");
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        AuthenticationProvider authenticationProvider = (AuthenticationProvider) applicationContext.getBean("ucAuthenticationProvider");
+        auth.authenticationProvider(authenticationProvider);
     }
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/assets/**", "/css/**", "/images/**");
@@ -41,47 +52,29 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint)
+        http.cors().and().csrf().disable().sessionManagement().disable()
+                .exceptionHandling()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers( "/login", "/oauth/**", "/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().successHandler(successAuthentication).failureHandler(failureAuthentication);
-    }
-
-    @Bean
-    @Override
-    public UserDetailsService userDetailsServiceBean() {
-        Collection<UserDetails> users = buildUsers();
-
-        return new InMemoryUserDetailsManager(users);
-    }
-
-    private Collection<UserDetails> buildUsers() {
-        String password = passwordEncoder().encode("123456");
-
-        List<UserDetails> users = new ArrayList<>();
-
-        UserDetails user_admin = User.withUsername("admin").password(password).authorities("ADMIN", "USER").build();
-        UserDetails user_user1 = User.withUsername("user1").password(password).authorities("USER").build();
-
-        users.add(user_admin);
-        users.add(user_user1);
-
-        return users;
+                .formLogin().successHandler(successAuthentication).failureHandler(failureAuthentication)
+                .and()
+                .logout().logoutSuccessHandler(myLogoutSuccessHandler).clearAuthentication(true).permitAll()
+        ;
+        //这里引入扩展登陆的配置
+//        http.apply(emailSecurityConfigurerAdapter)
+//                .and().apply(mobileSecurityConfigurerAdapter)
+//                .and().apply(socialSecurityConfigurerAdapter);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public TokenStore tokenStore(JedisConnectionFactory jedisConnectionFactory) {
+        return new RedisTokenStore(jedisConnectionFactory);
     }
-
 }
