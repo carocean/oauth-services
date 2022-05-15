@@ -1,4 +1,4 @@
-package com.fs.auth.config;
+package com.fs.auth.service;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class RemoteUserDetailsService implements UserDetailsService {
+public class UcUserDetailsService implements UserDetailsService {
     final
     PasswordEncoder passwordEncoder;
 
-    public RemoteUserDetailsService(PasswordEncoder passwordEncoder) {
+    public UcUserDetailsService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

@@ -1,6 +1,5 @@
-package com.fs.auth.config;
+package com.fs.auth.mobile;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,34 +8,19 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
-@Component
-public class UcAuthenticationProvider implements AuthenticationProvider, InitializingBean {
+public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
+    private PasswordEncoder passwordEncoder;
+    private UserDetailsService userDetailsService;
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
-
-    public UcAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+    public SmsCodeAuthenticationProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.notNull(this.userDetailsService, "userDetailsService is mandatory");
-        Assert.notNull(this.passwordEncoder, "passwordEncoder is mandatory");
-    }
-
-    @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken adminLoginToken = (UsernamePasswordAuthenticationToken) authentication;
+        SmsCodeAuthenticationToken adminLoginToken = (SmsCodeAuthenticationToken) authentication;
 //        System.out.println("===进入Admin密码登录验证环节====="+ JSON.toJSONString(adminLoginToken));
         UserDetails userDetails = userDetailsService.loadUserByUsername(adminLoginToken.getName());
         //matches方法，前面为明文，后续为加密后密文
@@ -47,4 +31,8 @@ public class UcAuthenticationProvider implements AuthenticationProvider, Initial
         throw new BadCredentialsException("用户名密码不正确");
     }
 
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return SmsCodeAuthenticationToken.class.isAssignableFrom(aClass);
+    }
 }

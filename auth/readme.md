@@ -1,0 +1,2 @@
+如果报错就在：AuthorizationEndpoint拦截
+AuthorizationEndpoint是认证的所有入口
