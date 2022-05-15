@@ -5,12 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import sun.net.www.http.HttpClient;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +43,22 @@ public class TokenResource {
         return map;
     }
 
+    @GetMapping("/token/sms_code")
+    public void tokenSmsCode(@RequestParam() String grant_type, @RequestParam() String mobile, @RequestParam() String sms_code, @RequestParam() String redirect_uri, @RequestParam() String scope, HttpServletResponse response) throws IOException {
+        String url = String.format("http://localhost:8080/oauth/token");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+        String text = String.format("grant_type=%s&mobile=%s&sms_code=%s&scope=%s&client_id=client1&client_secret=client1_secret",
+                 grant_type, mobile,sms_code, scope
+        );
+        HttpEntity<HashMap<String, Object>> request = new HttpEntity(text, headers);
+        String json = restTemplate.postForObject(url, request, String.class);
+        Map<String, Object> map = new ObjectMapper().readValue(json, HashMap.class);
+        String rewardUrl=String.format("%s?access_token=%s&refresh_token=%s&expires_in=%s&token_type=%s&scope=%s",
+                redirect_uri,map.get("access_token"),map.get("refresh_token"),map.get("expires_in"),map.get("token_type"),map.get("scope"));
+
+        response.sendRedirect(rewardUrl);
+    }
 
     @GetMapping("/refresh_token")
     public Map<String, Object> refreshToken(@RequestParam() String refresh_token) throws IOException {

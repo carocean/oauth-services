@@ -44,7 +44,7 @@ public class WebSecurityConfiguration extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //将自定义的/token和 refresh_token两个地址开放
-                .antMatchers("/token","/refresh_token", "/oauth2/**","/logout").permitAll()
+                .antMatchers("/token","/token/**","/refresh_token", "/oauth2/**","/logout").permitAll()
                 .anyRequest()
 //                .access("@rbacService.hasPermission(request,authentication)")//rbacService是自定义的鉴权
                 .authenticated()

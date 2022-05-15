@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: fcx
@@ -26,7 +28,8 @@ public class SuccessAuthentication extends SavedRequestAwareAuthenticationSucces
         PrintWriter writer = response.getWriter();
         Result result = new Result();
         result.setCode(0);
-        result.setMsg("成功");
+        result.setMsg("ok");
+        result.setData(request.getQueryString());
         ObjectMapper mapper = new ObjectMapper();
         writer.println(mapper.writeValueAsString(result));
         writer.flush();

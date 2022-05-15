@@ -29,7 +29,8 @@ public class UnauthorizedEntryPoint  implements AuthenticationEntryPoint {
         //response_type=token 简化模式，等同于加上grant_type=implicit参数
         //response_type=code 授权码模式，等同于加上grant_type=authorization_code参数
 //        String url = String.format("http://localhost:8083/login?response_type=token&client_id=client1&redirect_uri=http://localhost:8084%s&scope=all", "/home");
-        String url = String.format("http://localhost:8083/login?response_type=code&client_id=client1&redirect_uri=http://localhost:8084%s&scope=all", "/home");
+        //留给登录界面来选择授权类型及响应类型
+        String url = String.format("http://localhost:8083/login?client_id=client1&redirect_uri=http://localhost:8084%s&scope=all", "/home");
         Result result = new Result();
         result.setCode(800);
         result.setMsg("ok");
