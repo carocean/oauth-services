@@ -1,5 +1,7 @@
 package com.fs.client1;
 
+import com.fs.auth.common.R;
+import com.fs.auth.common.ResultCode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,8 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
@@ -56,16 +56,13 @@ public class Controller {
     @PreAuthorize("hasAuthority('commons') or hasAuthority('ADMIN')")
 //    @PreAuthorize("#oauth2.hasScope('ROLE_USER')")//如果用拿着以scope=all请求的令牌访问该方法则肯定被拒
 //    @PreAuthorize("hasPermission('')")
-    public Result test() {
-        Result result = new Result();
-        result.setCode(0);
-        result.setData("hello client1");
+    public R test() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         Object credentials = authentication.getCredentials();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         System.out.println(String.format("principal:%s; credentials:%s; authorities:%s", principal, credentials, authorities));
-        return result;
+        return R.of(ResultCode.SUCCESS,"hello client1");
     }
 
     @GetMapping("/")

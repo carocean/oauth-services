@@ -1,7 +1,9 @@
 package com.fs.auth.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fs.auth.common.R;
+import com.fs.auth.common.ResultCode;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Component
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
@@ -35,15 +36,9 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
             }
         }
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        PrintWriter writer = response.getWriter();
-        Result result = new Result();
-        result.setCode(810);
-        result.setMsg("logout success");
-        result.setData("登录成功");
-        ObjectMapper mapper = new ObjectMapper();
-        writer.println(mapper.writeValueAsString(result));
-        writer.flush();
-        writer.close();
+        ResultCode rc =ResultCode.IS_LOGOUT;
+        Object obj = R.of(rc, "ok");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(obj));
 
     }
 }

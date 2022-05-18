@@ -1,6 +1,6 @@
 package com.fs.client1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,13 +29,8 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded");
         String json = restTemplate.getForObject(url, String.class);
-        Map<String, Object> map = new ObjectMapper().readValue(json, HashMap.class);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        PrintWriter writer = response.getWriter();
-        ObjectMapper mapper = new ObjectMapper();
-        writer.println(mapper.writeValueAsString(map));
-        writer.flush();
-        writer.close();
+        response.getWriter().write(new ObjectMapper().writeValueAsString(json));
     }
 }

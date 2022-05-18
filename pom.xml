@@ -7,14 +7,9 @@
     <artifactId>sso</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
+        <module>oauth-common</module>
         <module>auth</module>
-        <module>auth-db</module>
         <module>client1</module>
-        <module>client2</module>
-        <module>auth-token</module>
-        <module>auth-code</module>
-        <module>client1-jwt</module>
-        <module>client2-jwt</module>
     </modules>
     <packaging>pom</packaging>
     <name>sso</name>

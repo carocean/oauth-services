@@ -1,6 +1,9 @@
 package com.fs.client1;
 
+import com.fs.auth.common.R;
+import com.fs.auth.common.ResultCode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -31,10 +34,9 @@ public class UnauthorizedEntryPoint  implements AuthenticationEntryPoint {
 //        String url = String.format("http://localhost:8083/login?response_type=token&client_id=client1&redirect_uri=http://localhost:8084%s&scope=all", "/home");
         //留给登录界面来选择授权类型及响应类型
         String url = String.format("http://localhost:8083/login?client_id=client1&redirect_uri=http://localhost:8084%s&scope=all", "/home");
-        Result result = new Result();
-        result.setCode(800);
-        result.setMsg("ok");
-        result.setData(url);
-        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(result));
+        ResultCode rc = ResultCode.UNAUTHORIZED_CLIENT;
+        Object obj = R.of(rc, url);
+        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(obj));
     }
 }
